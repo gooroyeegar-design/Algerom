@@ -1,83 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#F3F4F6">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Toolbar -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:background="#FFFFFF"
-        android:paddingStart="6dp"
-        android:paddingEnd="10dp"
-        android:elevation="2dp">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-        <ImageButton
-            android:id="@+id/btnBack"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@android:drawable/ic_media_previous"
-            android:contentDescription="Back" />
+    <application
+        android:allowBackup="true"
+        android:label="DZ Browser"
+        android:icon="@android:drawable/ic_menu_compass"
+        android:theme="@style/Theme.DzBrowser"
+        android:usesCleartextTraffic="false">
 
-        <ImageButton
-            android:id="@+id/btnForward"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@android:drawable/ic_media_next"
-            android:contentDescription="Forward" />
-
-        <ImageButton
-            android:id="@+id/btnReload"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@android:drawable/ic_popup_sync"
-            android:contentDescription="Reload" />
-
-        <EditText
-            android:id="@+id/addressBar"
-            android:layout_width="0dp"
-            android:layout_height="38dp"
-            android:layout_weight="1"
-            android:layout_marginStart="4dp"
-            android:background="@drawable/address_bar_background"
-            android:paddingStart="14dp"
-            android:paddingEnd="14dp"
-            android:hint="Search Google or type a URL"
-            android:textSize="14sp"
-            android:singleLine="true"
-            android:imeOptions="actionGo"
-            android:inputType="textUri" />
-
-        <ImageButton
-            android:id="@+id/btnHome"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="4dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@android:drawable/ic_menu_myplaces"
-            android:contentDescription="Home" />
-    </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:max="100"
-        android:progressTint="#0A7D3C"
-        android:visibility="gone" />
-
-    <WebView
-        android:id="@+id/webView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
-</LinearLayout>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="DZ Browser"
+            android:configChanges="orientation|screenSize|keyboardHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
