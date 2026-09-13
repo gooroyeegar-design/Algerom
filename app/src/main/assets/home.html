@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DZ Browser</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: #0e1410;
+    color: #eef1ee;
+    padding-bottom: 40px;
+  }
+  header {
+    background: #0A7D3C;
+    color: #fff;
+    padding: 28px 16px 22px;
+    text-align: center;
+    position: relative;
+  }
+  header .brand { font-size: 26px; font-weight: 700; letter-spacing: 0.5px; }
+  header .brand span { color: #F4E04D; }
+  header .tagline { font-size: 12.5px; opacity: 0.85; margin-top: 4px; }
+  .star-accent { display: inline-block; color: #D21034; font-size: 18px; margin: 0 6px; }
+
+  main { max-width: 720px; margin: 0 auto; padding: 18px 14px; }
+
+  .search-box {
+    display: flex; align-items: center;
+    background: #1b2420; border: 1px solid #2c3830; border-radius: 24px;
+    padding: 12px 18px; margin-top: -20px; margin-bottom: 20px;
+  }
+  .search-box input { flex: 1; background: transparent; border: none; outline: none; color: #eef1ee; font-size: 15px; }
+  .search-box button { background: #0A7D3C; color: #fff; border: none; border-radius: 16px; padding: 6px 14px; font-size: 13px; margin-left: 8px; }
+
+  .info-strip {
+    display: flex; flex-direction: column; gap: 10px;
+    background: #161f1a; border: 1px solid #232f27; border-radius: 14px;
+    padding: 14px; margin-bottom: 22px;
+  }
+  .info-row { display: flex; justify-content: space-between; align-items: center; font-size: 13.5px; }
+  .info-row select, .info-row input { background: #0e1410; color: #eef1ee; border: 1px solid #2c3830; border-radius: 8px; padding: 6px 8px; font-size: 13px; }
+  .converter-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .converter-row input { width: 90px; }
+  .converter-result { font-weight: 600; color: #7CD68B; }
+  .converter-note { font-size: 11px; opacity: 0.6; }
+
+  h2.section-title { font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.75; margin: 22px 0 10px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .card {
+    display: block; background: #161f1a; border: 1px solid #232f27; border-radius: 12px;
+    padding: 12px 14px; color: #eef1ee; text-decoration: none; font-size: 13.5px;
+    transition: background 0.15s ease;
+  }
+  .card:active { background: #1e2b23; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">DZ <span>Browser</span></div>
+  <div class="tagline">Votre navigateur <span class="star-accent">★</span> algérien</div>
+</header>
+
+<main>
+  <form class="search-box" id="searchForm">
+    <input id="searchInput" type="text" placeholder="Rechercher sur le Web ou saisir une URL" />
+    <button type="submit">Go</button>
+  </form>
+
+  <div class="info-strip">
+    <div class="info-row">
+      <span id="dzClock">--:--</span>
+      <select id="wilayaSelect"><option>Choisir une wilaya…</option></select>
+    </div>
+    <div class="converter-row">
+      <input id="dzdAmount" type="number" placeholder="Montant" value="1000" />
+      <span>DZD =</span>
+      <span class="converter-result" id="usdResult">—</span> USD /
+      <span class="converter-result" id="eurResult">—</span> EUR
+    </div>
+    <div class="converter-note">Taux approximatif, non actualisé en temps réel.</div>
+  </div>
+
+  <h2 class="section-title">Services gouvernementaux</h2>
+  <div class="grid" id="grid-government"></div>
+
+  <h2 class="section-title">Universités</h2>
+  <div class="grid" id="grid-universities"></div>
+
+  <h2 class="section-title">Ressources étudiantes</h2>
+  <div class="grid" id="grid-studentResources"></div>
+
+  <h2 class="section-title">Transport</h2>
+  <div class="grid" id="grid-transport"></div>
+
+  <h2 class="section-title">Actualités</h2>
+  <div class="grid" id="grid-news"></div>
+
+  <h2 class="section-title">Banque &amp; Finance</h2>
+  <div class="grid" id="grid-banking"></div>
+
+  <h2 class="section-title">Télécom</h2>
+  <div class="grid" id="grid-telecom"></div>
+
+  <h2 class="section-title">Sites utiles</h2>
+  <div class="grid" id="grid-useful"></div>
+</main>
+
+<script src="algeria-links.js"></script>
+<script>
+  Object.keys(ALGERIA_LINKS).forEach((category) => {
+    const container = document.getElementById("grid-" + category);
+    if (!container) return;
+    ALGERIA_LINKS[category].forEach((link) => {
+      const a = document.createElement("a");
+      a.className = "card";
+      a.href = link.url;
+      a.textContent = link.name;
+      container.appendChild(a);
+    });
+  });
+
+  const wilayaSelect = document.getElementById("wilayaSelect");
+  WILAYAS.forEach((w) => {
+    const opt = document.createElement("option");
+    opt.textContent = w;
+    wilayaSelect.appendChild(opt);
+  });
+
+  function updateClock() {
+    const now = new Date();
+    const formatted = now.toLocaleString("fr-FR", {
+      timeZone: "Africa/Algiers",
+      weekday: "short", day: "2-digit", month: "short",
+      hour: "2-digit", minute: "2-digit",
+    });
+    document.getElementById("dzClock").textContent = formatted;
+  }
+  updateClock();
+  setInterval(updateClock, 30000);
+
+  const RATE_DZD_TO_USD = 1 / 135;
+  const RATE_DZD_TO_EUR = 1 / 146;
+
+  function updateConversion() {
+    const amount = parseFloat(document.getElementById("dzdAmount").value) || 0;
+    document.getElementById("usdResult").textContent = (amount * RATE_DZD_TO_USD).toFixed(2);
+    document.getElementById("eurResult").textContent = (amount * RATE_DZD_TO_EUR).toFixed(2);
+  }
+  document.getElementById("dzdAmount").addEventListener("input", updateConversion);
+  updateConversion();
+
+  document.getElementById("searchForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const input = document.getElementById("searchInput").value.trim();
+    if (!input) return;
+    const hasScheme = /^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(input);
+    const looksLikeDomain = /^[^\s]+\.[a-zA-Z]{2,}(\/.*)?$/.test(input);
+    let target;
+    if (hasScheme) target = input;
+    else if (looksLikeDomain) target = "https://" + input;
+    else target = "https://www.google.com/search?q=" + encodeURIComponent(input);
+    window.location.href = target;
+  });
+</script>
+</body>
+    </html>
