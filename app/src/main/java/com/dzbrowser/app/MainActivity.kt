@@ -21,7 +21,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnReload: ImageButton
     private lateinit var btnHome: ImageButton
 
-    private val homeUrl = "https://www.google.com"
+    // Local Algeria dashboard, bundled as an app asset — works fully offline
+    // except for the links themselves, which open real websites.
+    private val homeUrl = "file:///android_asset/home.html"
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
